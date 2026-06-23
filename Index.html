@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Momo ❤️</title>
+    <!-- Romantic & Cute Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
+            font-family: 'Quicksand', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 75, 110, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 90%;
+            width: 450px;
+            z-index: 10;
+            transition: all 0.5s ease;
+        }
+        /* Cute SVG Panda Styling */
+        .panda-box {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            animation: bounce 2s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #ff477e;
+            font-size: 28px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            height: 50px;
+        }
+        button {
+            padding: 12px 35px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            font-family: 'Quicksand', sans-serif;
+        }
+        #yesBtn {
+            background-color: #ff477e;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 71, 126, 0.4);
+        }
+        #yesBtn:hover {
+            transform: scale(1.1);
+            background-color: #ff1f60;
+        }
+        #noBtn {
+            background-color: #a3b18a;
+            color: white;
+            position: absolute;
+            left: 240px;
+            transition: all 0.2s ease;
+        }
+        /* Floating Hearts & Kisses */
+        .floating-heart {
+            position: absolute;
+            bottom: -50px;
+            pointer-events: none;
+            animation: floatUp 4s linear forwards;
+            z-index: 1;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-105vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        /* Fireworks Canvas */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="fireworks"></canvas>
+    <div id="hearts-container"></div>
+
+    <div class="container" id="mainCard">
+        <!-- Cute Animated Panda (Inline SVG) -->
+        <div class="panda-box">
+            <svg viewBox="0 0 200 200" width="100%" height="100%">
+                <circle cx="50" cy="50" r="25" fill="#2e2e2e"/>
+                <circle cx="150" cy="50" r="25" fill="#2e2e2e"/>
+                <circle cx="100" cy="110" r="65" fill="#ffffff" stroke="#2e2e2e" stroke-width="4"/>
+                <ellipse cx="75" cy="105" rx="18" ry="22" fill="#2e2e2e"/>
+                <ellipse cx="125" cy="105" rx="18" ry="22" fill="#2e2e2e"/>
+                <circle cx="78" cy="102" r="6" fill="#ffffff"/>
+                <circle cx="122" cy="102" r="6" fill="#ffffff"/>
+                <circle cx="80" cy="100" r="2" fill="#2e2e2e"/>
+                <circle cx="120" cy="100" r="2" fill="#2e2e2e"/>
+                <ellipse cx="100" cy="122" rx="10" ry="6" fill="#2e2e2e"/>
+                <circle cx="52" cy="125" r="8" fill="#ffb6c1"/>
+                <circle cx="148" cy="125" r="8" fill="#ffb6c1"/>
+                <path d="M 94 132 Q 100 138 106 132" fill="none" stroke="#2e2e2e" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+        <h1 id="questionText">I LOVE YOU SO MUCH MOMO <br> Do you love me?</h1>
+
+        <div class="buttons" id="btnGroup">
+            <button id="yesBtn" onclick="celebrate()">Yes</button>
+            <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">No</button>
+        </div>
+    </div>
+
+    <!-- Background Love Music (Royalty-free sweet romantic track) -->
+    <audio id="loveMusic" src="https://assets.mixkit.co/music/preview/mixkit-romantic-walk-1205.mp3" loop></audio>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const questionText = document.getElementById('questionText');
+        const heartsContainer = document.getElementById('hearts-container');
+        const music = document.getElementById('loveMusic');
+
+        // 'No' Button ko bhagane ka function
+        function moveNoButton() {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        // 'Yes' click hone par celebration
+        function celebrate() {
+            // Play Music
+            music.play().catch(error => console.log("Audio playback triggered after interaction."));
+
+            // Change Text & Hide Buttons
+            questionText.innerHTML = "Yayyy! ❤️<br>I Knew It Momo! 💋<br>I Love You Forever!";
+            document.getElementById('btnGroup').style.display = 'none';
+
+            // Start Effects
+            setInterval(createHeart, 150);
+            startFireworks();
+        }
+
+        // Hearts aur Kisses generate karne ka function
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            
+            const elements = ['❤️', '💋', '💖', '🌸', '🥰'];
+            heart.innerText = elements[Math.floor(Math.random() * elements.length)];
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        // Canvas Fireworks Logic
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.radius = Math.random() * 3 + 1;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 8,
+                    y: (Math.random() - 0.5) * 8
+                };
+                this.alpha = 1;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+            update() {
+                this.velocity.y += 0.05; // gravity
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.alpha -= 0.01;
+            }
+        }
+
+        function spawnFirework() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * (canvas.height * 0.6);
+            const colors = ['#ff477e', '#ff7096', '#ff85a1', '#fbb1bd', '#f9bec7', '#fff'];
+            
+            for (let i = 0; i < 40; i++) {
+                particles.push(new Particle(x, y, colors[Math.floor(Math.random() * colors.length)]));
+            }
+        }
+
+        function animateFireworks() {
+            requestAnimationFrame(animateFireworks);
+            ctx.fillStyle = 'rgba(255, 229, 236, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((particle, index) => {
+                if (particle.alpha <= 0) {
+                    particles.splice(index, 1);
+                } else {
+                    particle.update();
+                    particle.draw();
+                }
+            });
+        }
+
+        function startFireworks() {
+            animateFireworks();
+            setInterval(spawnFirework, 600);
+        }
+    </script>
+</body>
+</html>
